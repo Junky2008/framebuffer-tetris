@@ -1,4 +1,4 @@
-CC=gcc
+CC=arm-linux-gnueabihf-gcc
 .SUFFIXES:.c
 .c.o:
 	$(CC) -Wall -g -c $<

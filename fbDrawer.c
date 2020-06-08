@@ -33,7 +33,6 @@ void openfb(char* bfname) {
 		printf("Error reading variable information\n");
 		exit(3);
 	}
-
     screensize = vinfo.xres*vinfo.yres*vinfo.bits_per_pixel/8;
 
 	//map the device to memory 
@@ -64,12 +63,16 @@ void drawline(int x1, int y1, int x2, int y2,int color) {
 	}
 	if(y1<0 || x1<0) return;
 	int x,y;
+	
 	if(x2-x1 > y2-y1) {
         for(x=x1;x<=x2;x++) {
 			double k = (double)(y2-y1)/(x2-x1);
 			y = (int)(k*(x-x1) + y1);
-			int location = (x+vinfo.xoffset)*(vinfo.bits_per_pixel/8)
-				+ (y+vinfo.yoffset)*finfo.line_length;
+			//int location = (x+vinfo.xoffset)*(vinfo.bits_per_pixel/8)
+			//	+ (y+vinfo.yoffset)*finfo.line_length;
+				
+			int location = (y+vinfo.yoffset)*(vinfo.bits_per_pixel/8)
+				+ (vinfo.yres-(x+vinfo.xoffset))*finfo.line_length;
 			memcpy(fbp+location, &color, vinfo.bits_per_pixel/8);
 		}
 	}
@@ -77,8 +80,11 @@ void drawline(int x1, int y1, int x2, int y2,int color) {
         for(y=y1;y<=y2;y++) {
 			double k = (double)(x2-x1)/(y2-y1);
 			x = (int)(k*(y-y1) + x1);
-			int location = (x+vinfo.xoffset)*(vinfo.bits_per_pixel/8)
-				+ (y+vinfo.yoffset)*finfo.line_length;
+			//int location = (x+vinfo.xoffset)*(vinfo.bits_per_pixel/8)
+			//	+ (y+vinfo.yoffset)*finfo.line_length;
+				
+			int location = (y+vinfo.yoffset)*(vinfo.bits_per_pixel/8)
+				+ (vinfo.yres-(x+vinfo.xoffset))*finfo.line_length;
 			memcpy(fbp+location, &color, vinfo.bits_per_pixel/8);
 		}
 	}

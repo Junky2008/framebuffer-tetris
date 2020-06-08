@@ -95,6 +95,37 @@ void newBlock() {
 	default:
 		break;
 	}
+	int c = 0xFFFFFFFF;
+	int color = rand()%6;
+	switch(color)
+	{
+	case 0:
+		c = 0xFFFFF800; //RED
+		break;
+
+	case 1:
+		c = 0xFFFF07C0; //green
+		break;
+
+	case 2:
+		c = 0xFFFF001E; // blue
+		break;
+
+	case 3:
+		c = 0xFFFFFFC0; //yellow
+		break;
+
+	case 4:
+		c = 0xFFFFF81E; //purple
+		break;
+
+	case 5:
+		c = 0xFFFF07FE; //cyan
+		break;
+
+	default:
+		break;
+	}
 	int move;//临时变量---判断是否可以移动或者旋转
 	for(i=H-1;i>=0;i--) {
 		for(j=0,move=TRUE;j<W;j++)
@@ -111,12 +142,18 @@ void newBlock() {
 					else coverCell(j,k);
 		}
 	}
+	setColor(c);
 }
 
 void moveDown() {
 	int i;
     for(i=0;i<4;i++)
 		if(blocks[curx[i]][cury[i]+1]>=0) {
+			setColor(0xFFFFFFFF);
+			for(i=0;i<4;i++)
+			    coverCell(curx[i],cury[i]);
+			for(i=0;i<4;i++)
+				drawCell(curx[i],cury[i]);
 			if(cury[4]<0) {
 				printf("Game Over!!!\n");
 				printf("Your score:%d\n",score);
@@ -143,7 +180,7 @@ void moveLeft() {
 		coverCell(curx[i]--,cury[i]);
 	for(i=0;i<4;i++)
 		drawCell(curx[i],cury[i]);
-	curx[4]--;	    
+	curx[4]--;
 }
 
 void moveRight() {
